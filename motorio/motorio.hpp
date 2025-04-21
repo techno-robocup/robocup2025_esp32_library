@@ -2,13 +2,13 @@
 #define __ROBOT__MOTORIO__HPP 1
 #include <Arduino.h>
 class MOTORIO {
-public:
+ public:
   MOTORIO();
-  MOTORIO(const std::int8_t &);
-  MOTORIO &operator=(const MOTORIO &) = default;
-  void run_msec(const int &);
+  MOTORIO(const std::int8_t&);
+  MOTORIO& operator=(const MOTORIO&) = default;
+  void run_msec(const int&);
 
-private:
+ private:
   std::int8_t PIN;
 };
 #endif
