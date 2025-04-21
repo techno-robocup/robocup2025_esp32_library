@@ -14,14 +14,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache clang-format
-        uses: actions/cache@v3
-        with:
-          path: /var/cache/apt/archives
-          key: ${{ runner.os }}-apt-clang-format
-          restore-keys: |
-            ${{ runner.os }}-apt-
-
       - name: Install clang-format
         run: |
           sudo apt-get update
