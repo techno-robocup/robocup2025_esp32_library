@@ -30,8 +30,8 @@ jobs:
           sudo apt-get -o dir::cache::archives="$(pwd)/apt-cache" \
           --download-only install clang-format
 
-      - name: Install packages
-        run: |
+          - name: Install packages
+          run: |
           sudo dpkg -i apt-cache/*.deb || true
           sudo apt-get install -o dir::cache::archives="$(pwd)/apt-cache" -f -y
 
