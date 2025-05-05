@@ -14,26 +14,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache custom apt package cache
-        uses: actions/cache@v3
-        with:
-          path: ./apt-cache
-          key: apt-cache-${{ runner.os }}-v1
-          restore-keys: |
-            apt-cache-${{ runner.os }}-v1
-
-
-      - name: Download clang-format
+      - name: Install clang-format
         run: |
           sudo apt-get update
-          mkdir -p ./apt-cache
-          sudo apt-get -o dir::cache::archives="$(pwd)/apt-cache" \
-          --download-only install clang-format
-
-          - name: Install packages
-          run: |
-          sudo dpkg -i apt-cache/*.deb || true
-          sudo apt-get install -o dir::cache::archives="$(pwd)/apt-cache" -f -y
+          sudo apt-get install -y clang-format
 
       - name: Format code
         run: |
