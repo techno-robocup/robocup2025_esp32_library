@@ -2,11 +2,20 @@
 class SerialIO {
   public:
     SerialIO();
-    void sendMessage(const String& message);
-    void sendMessage(const char* message);
-    String receiveMessage();
+    Message sendMessage(const Message& message);
+    Message receiveMessage();
     bool isMessageAvailable();
     void init();
   private:
     bool isReady;
+};
+
+class Message {
+  public:
+    Message(long long id, const String& message);
+    long long getId();
+    String getMessage();
+  private:
+    long long id;
+    String message;
 };
