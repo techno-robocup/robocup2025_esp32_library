@@ -3,8 +3,8 @@
 class Message {
   public:
     Message(long long id, const String& message);
-    long long getId();
-    String getMessage();
+    long long getId() const;
+    String getMessage() const;
   private:
     long long id;
     String message;
