@@ -1,14 +1,4 @@
 #include <Arduino.h>
-class SerialIO {
-  public:
-    SerialIO();
-    Message sendMessage(const Message& message);
-    Message receiveMessage();
-    bool isMessageAvailable();
-    void init();
-  private:
-    bool isReady;
-};
 
 class Message {
   public:
@@ -18,4 +8,15 @@ class Message {
   private:
     long long id;
     String message;
+};
+
+class SerialIO {
+  public:
+    SerialIO();
+    Message sendMessage(const Message& message);
+    Message receiveMessage();
+    bool isMessageAvailable();
+    void init();
+  private:
+    bool isReady;
 };
