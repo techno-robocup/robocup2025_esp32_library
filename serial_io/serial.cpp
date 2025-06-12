@@ -1,8 +1,6 @@
 #include "serial_io.hpp"
 
-SerialIO::SerialIO() : isReady(false) {
-  init();
-}
+SerialIO::SerialIO() : isReady(false) { init(); }
 
 void SerialIO::init() {
   Serial.begin(9600);
