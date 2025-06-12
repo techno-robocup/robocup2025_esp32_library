@@ -1,12 +1,13 @@
 #include "serial_io.hpp"
 
-SerialIO::SerialIO() {
+SerialIO::SerialIO() : isReady(false) {
   init();
-  isReady = false;
+  Serial.flush();
 }
 
 void SerialIO::init() {
   Serial.begin(9600);
+  Serial.flush();
   while (true) {
     if (Serial.available()) {
       String str = Serial.readStringUntil('\n');
