@@ -24,6 +24,12 @@ void SerialIO::sendMessage(const String& message) { Serial.println(message); }
 
 void SerialIO::sendMessage(const char* message) { Serial.println(message); }
 
-String SerialIO::receiveMessage() { return Serial.readStringUntil('\n'); }
+Message SerialIO::receiveMessage() {
+  String str = Serial.readStringUntil('\n');
+  int id_end = str.indexOf(' ');
+  long long id = str.substring(0, id_end).toInt();
+  String message = str.substring(id_end + 1);
+  return Message(id, message);
+}
 
 bool SerialIO::isMessageAvailable() { return Serial.available() > 0; }
