@@ -13,7 +13,7 @@ class Message {
 class SerialIO {
   public:
     SerialIO();
-    Message sendMessage(const Message& message);
+    void sendMessage(const Message& message);
     Message receiveMessage();
     bool isMessageAvailable();
     void init();
