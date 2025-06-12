@@ -20,9 +20,10 @@ void SerialIO::init() {
   }
 }
 
-void SerialIO::sendMessage(const String& message) { Serial.println(message); }
-
-void SerialIO::sendMessage(const char* message) { Serial.println(message); }
+void SerialIO::sendMessage(const Message& message) {
+  Serial.println(String(message.getID()) + String(" ") + String(message.getMessage()));
+  return;
+}
 
 Message SerialIO::receiveMessage() {
   String str = Serial.readStringUntil('\n');
