@@ -2,7 +2,6 @@
 
 SerialIO::SerialIO() : isReady(false) {
   init();
-  Serial.flush();
 }
 
 void SerialIO::init() {
