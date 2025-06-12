@@ -4,7 +4,6 @@ SerialIO::SerialIO() : isReady(false) { init(); }
 
 void SerialIO::init() {
   Serial.begin(9600);
-  Serial.flush();
   while (true) {
     if (Serial.available()) {
       String str = Serial.readStringUntil('\n');
