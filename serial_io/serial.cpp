@@ -21,7 +21,7 @@ void SerialIO::init() {
 }
 
 void SerialIO::sendMessage(const Message& message) {
-  Serial.println(String(message.getID()) + String(" ") + String(message.getMessage()));
+  Serial.println(String(message.getId()) + String(" ") + String(message.getMessage()));
   return;
 }
 
@@ -34,3 +34,9 @@ Message SerialIO::receiveMessage() {
 }
 
 bool SerialIO::isMessageAvailable() { return Serial.available() > 0; }
+
+Message::Message(long long Id, const String& Message) : id(Id), message(Message) {}
+
+long long Message::getId() const { return id; }
+
+String Message::getMessage() const { return message; }
