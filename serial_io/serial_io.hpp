@@ -8,5 +8,5 @@ class SerialIO {
     bool isMessageAvailable();
     void init();
   private:
-    bool isReady = false;
+    bool isReady;
 };
