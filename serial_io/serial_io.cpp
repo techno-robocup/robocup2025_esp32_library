@@ -2,9 +2,7 @@
 
 SerialIO::SerialIO() : isReady(false) { init(); }
 
-void SerialIO::init() {
-  Serial.begin(9600);
-}
+void SerialIO::init() { Serial.begin(9600); }
 
 void SerialIO::sendMessage(const Message& message) {
   Serial.println(String(message.getId()) + String(" ") + String(message.getMessage()));
