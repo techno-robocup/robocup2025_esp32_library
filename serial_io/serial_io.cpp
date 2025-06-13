@@ -25,7 +25,7 @@ void SerialIO::sendMessage(const Message& message) {
 Message SerialIO::receiveMessage() {
   long long id = -1;
   String message = "";
-  while(Serial.available()) {
+  while (Serial.available()) {
     String str = Serial.readStringUntil('\n');
     int id_end = str.indexOf(' ');
     id = str.substring(0, id_end).toInt();
