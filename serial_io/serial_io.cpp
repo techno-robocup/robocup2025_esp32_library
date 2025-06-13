@@ -4,17 +4,6 @@ SerialIO::SerialIO() : isReady(false) { init(); }
 
 void SerialIO::init() {
   Serial.begin(9600);
-  while (true) {
-    if (Serial.available()) {
-      String str = Serial.readStringUntil('\n');
-      if (str == "[RASPI] READY?") {
-        Serial.println("[ESP32] READY");
-      } else if (str == "[RASPI] READY CONFIRMED") {
-        isReady = true;
-        break;
-      }
-    }
-  }
 }
 
 void SerialIO::sendMessage(const Message& message) {
