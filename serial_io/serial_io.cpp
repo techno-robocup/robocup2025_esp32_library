@@ -9,7 +9,7 @@ void SerialIO::sendMessage(const Message& message) {
   return;
 }
 
-const Message& SerialIO::receiveMessage() {
+Message SerialIO::receiveMessage() {
   long long id = -1;
   String message = "";
   while (Serial.available()) {
@@ -17,7 +17,6 @@ const Message& SerialIO::receiveMessage() {
     int id_end = str.indexOf(' ');
     id = str.substring(0, id_end).toInt();
     message = str.substring(id_end + 1);
-    return Message(id, message);
   }
   return Message(id, message);
 }

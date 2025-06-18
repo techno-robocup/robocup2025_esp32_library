@@ -15,7 +15,7 @@ class SerialIO {
  public:
   SerialIO();
   void sendMessage(const Message& message);
-  const Message& receiveMessage();
+  Message receiveMessage();
   bool isMessageAvailable();
   void init();
 
