@@ -17,7 +17,6 @@ const Message& SerialIO::receiveMessage() {
     int id_end = str.indexOf(' ');
     id = str.substring(0, id_end).toInt();
     message = str.substring(id_end + 1);
-    return Message(id, message);
   }
   return Message(id, message);
 }
