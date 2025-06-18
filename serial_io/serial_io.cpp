@@ -9,7 +9,7 @@ void SerialIO::sendMessage(const Message& message) {
   return;
 }
 
-const Message& SerialIO::receiveMessage() {
+Message SerialIO::receiveMessage() {
   long long id = -1;
   String message = "";
   while (Serial.available()) {
