@@ -1,6 +1,7 @@
 #ifndef __ROBOT__ARMIO__HPP
 #define __ROBOT__ARMIO__HPP 1
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 class ARMIO {
  public:
