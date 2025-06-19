@@ -1,7 +1,5 @@
 #include <motorio.hpp>
 
-constexpr int tyre_1 = 13, tyre_2 = 14, tyre_3 = 15, tyre_4 = 16;
-
 MOTORIO::MOTORIO(const std::int8_t& _PIN) : PIN(_PIN) { pinMode(PIN, OUTPUT); }
 
 MOTORIO::MOTORIO() {}
