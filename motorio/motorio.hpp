@@ -4,7 +4,7 @@
 class MOTORIO {
  public:
   MOTORIO();
-  MOTORIO(const std::int8_t&);
+  MOTORIO(const std::int8_t&, const int&);
   MOTORIO& operator=(const MOTORIO&) = default;
   void run_msec(const int&);
 
