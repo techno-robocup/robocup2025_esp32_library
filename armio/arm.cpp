@@ -13,7 +13,9 @@ ARMIO::ARMIO(const std::int8_t& _PIN) : PIN(_PIN) { pinMode(PIN, OUTPUT); }
 
 ARMIO::ARMIO() {}
 
-void ARMIO::arm_position(const int& tension) {
+void ARMIO::arm_position(const int& position) {}
+
+void ARMIO::wire(const bool& tension) {  // TODO: Test Angle
   if (tension = 1) {
     Servo.write(180);
   } else if (tension = 0) {
