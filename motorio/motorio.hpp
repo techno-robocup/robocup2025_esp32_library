@@ -10,5 +10,7 @@ class MOTORIO {
 
  private:
   std::int8_t PIN;
+  long long prev_msec;
+  bool is_running;
 };
 #endif
