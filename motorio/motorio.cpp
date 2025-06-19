@@ -9,10 +9,3 @@ void MOTORIO::run_msec(const int& msec) {
   digitalWrite(PIN, LOW);
   return;
 }
-
-void setup() {
-  pinMode(tyre_1, OUTPUT);
-  pinMode(tyre_2, OUTPUT);
-  pinMode(tyre_3, OUTPUT);
-  pinMode(tyre_4, OUTPUT);
-}
