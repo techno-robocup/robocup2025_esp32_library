@@ -13,7 +13,10 @@ ARMIO::ARMIO(const std::int8_t& _PIN) : PIN(_PIN) { pinMode(PIN, OUTPUT); }
 
 ARMIO::ARMIO() {}
 
-void ARMIO::arm_position(const int& position) {}
+void ARMIO::arm_position(const int& position) {
+  feedback = analogRead(arm_feedback);
+  analogWrite(arm_pulse, position)  // TODO: position (0,1,2)
+}
 
 void ARMIO::wire(const bool& tension) {  // TODO: Test Angle
   if (tension = 1) {
