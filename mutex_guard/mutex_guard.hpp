@@ -6,6 +6,6 @@ class MutexGuard {
   MutexGuard(SemaphoreHandle_t sem);
   ~MutexGuard();
 
-  private:
+ private:
   SemaphoreHandle_t sem;
 };
