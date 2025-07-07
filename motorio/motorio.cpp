@@ -6,6 +6,7 @@ MOTORIO::MOTORIO(const std::int8_t& _PIN, const int& _interval)
 }
 
 MOTORIO::MOTORIO() {}
+
 void MOTORIO::run_msec(const int& msec) {
   if (is_running) {
     if (micros() - prev_msec >= msec) {
