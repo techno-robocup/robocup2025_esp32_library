@@ -8,18 +8,18 @@ MOTORIO::MOTORIO(const std::int8_t& _PIN, const int& _interval)
 MOTORIO::MOTORIO() {}
 
 void MOTORIO::run_msec(const int& msec) {
+  unsigned long now = micros();
   if (is_running) {
-    if (micros() - prev_msec >= msec) {
+    if (now - prev_msec >= msec) {
       digitalWrite(PIN, LOW);
       is_running = false;
-      prev_msec = micros();
+      prev_msec = now;
     }
   } else {
-    if (micros() - prev_msec >= interval) {
+    if (now - prev_msec >= interval) {
       digitalWrite(PIN, HIGH);
       is_running = true;
-      prev_msec = micros();
+      prev_msec = now;
     }
   }
-  return;
 }
