@@ -12,12 +12,16 @@ void MOTORIO::run_msec(const int& msec) {
   if (is_running) {
     if (now - prev_msec >= msec) {
       digitalWrite(PIN, LOW);
+      Serial.print("MOTORIO::run_msec LOW ");
+      Serial.println(now - prev_msec);
       is_running = false;
       prev_msec = now;
     }
   } else {
     if (now - prev_msec >= interval) {
       digitalWrite(PIN, HIGH);
+      Serial.print("MOTORIO::run_msec HIGH ");
+      Serial.println(now - prev_msec);
       is_running = true;
       prev_msec = now;
     }
