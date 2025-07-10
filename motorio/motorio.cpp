@@ -12,7 +12,7 @@ void MOTORIO::run_msec(const int& msec) {
     return;
   }
   digitalWrite(PIN, HIGH);
-  delay(msec);
+  delayMicroseconds(msec);
   digitalWrite(PIN, LOW);
   prev_msec = micros();
 }
