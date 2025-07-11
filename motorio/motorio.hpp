@@ -7,7 +7,7 @@ class MOTORIO {
   MOTORIO();
   MOTORIO(const std::int8_t&, const int&);
   MOTORIO& operator=(const MOTORIO&) = default;
-  void run_msec(const int&);
+  virtual void run_msec(const int&);
 
  private:
   std::int8_t PIN;
