@@ -9,8 +9,6 @@ void UltrasonicIO::read(long* values) {
   digitalWrite(trig, HIGH);
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
-  long duration = pulseIn(echo, HIGH);
-  duration *= 0.000001 * 3400;
-  duration /= 2.0;
-  *values = duration;
+  // duration: centimeter
+  *values = pulseIn(echo, HIGH) * 0.000001 * 3400 / 2.0;
 }
