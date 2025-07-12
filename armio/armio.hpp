@@ -3,7 +3,7 @@
 #define __ROBOT__ARMIO__HPP 1
 
 #include <Arduino.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 #include "motorio.hpp"
 class ARMIO : public MOTORIO {
  public:
