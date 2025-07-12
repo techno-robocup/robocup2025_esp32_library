@@ -10,7 +10,8 @@ void UltrasonicIO::read(long* values) {
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
   long duration = pulseIn(echo, HIGH);
-  duration *= 0.000001 * 3400;
-  duration /= 2.0;
+  // Optimized: Use integer arithmetic instead of floating-point
+  // 0.000001 * 3400 / 2.0 = 0.0017, so multiply by 17 and divide by 10000
+  duration = (duration * 17) / 10000;
   *values = duration;
 }
