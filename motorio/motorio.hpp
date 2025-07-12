@@ -11,7 +11,7 @@ class MOTORIO {
 
  private:
   std::int8_t PIN;
-  long long prev_msec;
+  unsigned long prev_msec;  // Changed to unsigned for overflow handling
   int interval;
 };
 #endif
