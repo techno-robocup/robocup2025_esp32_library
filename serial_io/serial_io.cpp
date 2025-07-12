@@ -14,7 +14,7 @@ void SerialIO::sendMessage(const Message& message) {
 Message SerialIO::receiveMessage() {
   long long id = -1;
   String message = "";
-  
+
   if (Serial.available()) {
     String str = Serial.readStringUntil('\n');
     if (str.length() > 0) {

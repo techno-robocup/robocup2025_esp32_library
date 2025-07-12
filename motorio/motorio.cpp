@@ -10,10 +10,10 @@ MOTORIO::MOTORIO() {}
 void MOTORIO::run_msec(const int& msec) {
   unsigned long current_micros = micros();
   // Handle micros() overflow (wraps around every ~70 minutes)
-  unsigned long elapsed = (current_micros >= prev_msec) ? 
-                         (current_micros - prev_msec) : 
-                         (0xFFFFFFFF - prev_msec + current_micros + 1);
-  
+  unsigned long elapsed = (current_micros >= prev_msec)
+                              ? (current_micros - prev_msec)
+                              : (0xFFFFFFFF - prev_msec + current_micros + 1);
+
   if (elapsed < (unsigned long)interval) {
     return;
   }
