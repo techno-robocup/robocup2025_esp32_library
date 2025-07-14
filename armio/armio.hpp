@@ -4,13 +4,13 @@
 
 #include <Arduino.h>
 #include <ESP32Servo.h>
-#include "motorio.hpp"
-class ARMIO : public MOTORIO {
+
+class ARMIO {
  public:
   ARMIO();
-  ARMIO(const std::int8_t&, const std::int8_t&,
-        const std::int8_t&);  // TODO: arm_pin,arm_feedback_pin,wire_pin
-  void run_msec(const int&) override;
+  ARMIO(const std::int8_t&, const std::int8_t&, const std::int8_t&);  // arm, feedback, wire
+  ARMIO& operator=(const ARMIO&) = default;
+  void arm_set_position(const int&);
   void wire_tension_function(const bool&);
   void read_arm_feedback();
 
@@ -20,8 +20,8 @@ class ARMIO : public MOTORIO {
   std::int8_t WIRE_PIN;
   int arm_goal_position;
   int arm_current_position;
-  const int WIRE_THIN = 0;  // FIXME: edit value
-  const int WIRE_LOOSE = 0;
+  const int WIRE_THIN = 45;  // FIXME: 適切な角度に変更
+  const int WIRE_LOOSE = 135;
   Servo wireServo;
 };
 
