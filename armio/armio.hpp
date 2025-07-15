@@ -14,9 +14,9 @@ class ARMIO {
   void wire_tension_function(const bool&);
   void read_arm_feedback();
   void init_pwm();
-  constexpr int SERVO_CH = 0;
-  constexpr int PWM_FREQ = 50;
-  constexpr int PWM_RES = 16;
+  constexpr static int SERVO_CH = 0;
+  constexpr static int PWM_FREQ = 50;
+  constexpr static int PWM_RES = 16;
   const uint32_t WIRE_THIN = 1638;
   const uint32_t WIRE_LOOSE = 7864;
 
