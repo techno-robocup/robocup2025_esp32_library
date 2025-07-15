@@ -22,7 +22,6 @@ ARMIO::ARMIO(const std::int8_t& _ARM_PIN, const std::int8_t& _ARM_FEEDBACK_PIN,
   pinMode(ARM_PIN, OUTPUT);
   pinMode(ARM_FEEDBACK_PIN, INPUT);
   pinMode(WIRE_PIN, OUTPUT);
-  wireServo.attach(WIRE_PIN);
 }
 
 void ARMIO::read_arm_feedback() { arm_current_position = analogRead(ARM_FEEDBACK_PIN); }
