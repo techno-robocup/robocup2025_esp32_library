@@ -20,9 +20,11 @@ class ARMIO {
   std::int8_t WIRE_PIN;
   int arm_goal_position;
   int arm_current_position;
-  const int WIRE_THIN = 45;  // FIXME: 適切な角度に変更
-  const int WIRE_LOOSE = 135;
-  Servo wireServo;
+  constexpr int SERVO_CH = 0;
+  constexpr int PWM_FREQ = 50;
+  constexpr int PWM_RES = 16;
+  const uint32_t WIRE_THIN = 1638;
+  const uint32_t WIRE_LOOSE = 7864;
 };
 
 #endif

@@ -38,8 +38,8 @@ void ARMIO::arm_set_position(const int& goal) {
 
 void ARMIO::wire_tension_function(const bool& wire_option) {
   if (wire_option) {
-    wireServo.write(WIRE_THIN);
+    ledcWrite(SERVO_CH, WIEW_THIN);
   } else {
-    wireServo.write(WIRE_LOOSE);
+    ledcWrite(SERVO_CH.WIRE_LOOSE);
   }
 }
