@@ -13,6 +13,11 @@ class ARMIO {
   void arm_set_position(const int&);
   void wire_tension_function(const bool&);
   void read_arm_feedback();
+  constexpr int SERVO_CH = 0;
+  constexpr int PWM_FREQ = 50;
+  constexpr int PWM_RES = 16;
+  const uint32_t WIRE_THIN = 1638;
+  const uint32_t WIRE_LOOSE = 7864;
 
  private:
   std::int8_t ARM_PIN;
@@ -20,11 +25,6 @@ class ARMIO {
   std::int8_t WIRE_PIN;
   int arm_goal_position;
   int arm_current_position;
-  constexpr int SERVO_CH = 0;
-  constexpr int PWM_FREQ = 50;
-  constexpr int PWM_RES = 16;
-  const uint32_t WIRE_THIN = 1638;
-  const uint32_t WIRE_LOOSE = 7864;
 };
 
 #endif
