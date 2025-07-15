@@ -8,8 +8,8 @@ ARMIO::ARMIO()
     , arm_current_position(0) {}
 
 void ARMIO::init_pwm() {
-  ledcSetup(0, 50, 16);
-  ledcAttachPin(WIRE_PIN, 0);
+  ledcSetup(SERVO_CH, PWM_FREQ, PWM_RES);
+  ledcAttachPin(WIRE_PIN, SERVO_CH);
 }
 
 ARMIO::ARMIO(const std::int8_t& _ARM_PIN, const std::int8_t& _ARM_FEEDBACK_PIN,
