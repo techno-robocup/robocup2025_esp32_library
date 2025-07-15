@@ -13,6 +13,7 @@ class ARMIO {
   void arm_set_position(const int&);
   void wire_tension_function(const bool&);
   void read_arm_feedback();
+  void init_pwm();
   constexpr int SERVO_CH = 0;
   constexpr int PWM_FREQ = 50;
   constexpr int PWM_RES = 16;
