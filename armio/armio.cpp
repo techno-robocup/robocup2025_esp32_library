@@ -27,17 +27,17 @@ ARMIO::ARMIO(const std::int8_t& _ARM_PIN, const std::int8_t& _ARM_FEEDBACK_PIN,
 void ARMIO::read_arm_feedback() { arm_current_position = analogRead(ARM_FEEDBACK_PIN); }
 
 void ARMIO::arm_set_position(const int& goal) {
-  arm_goal_position = goal;
-  read_arm_feedback();
+  // arm_goal_position = goal;
+  // read_arm_feedback();
 
-  int pwm_value = 128;  // FIXME: 適切な値に調整
-  if (arm_goal_position > arm_current_position) {
-    analogWrite(ARM_PIN, pwm_value);
-  } else if (arm_goal_position < arm_current_position) {
-    analogWrite(ARM_PIN, 255 - pwm_value);
-  } else {
-    analogWrite(ARM_PIN, 0);
-  }
+  // int pwm_value = 128;  // FIXME: 適切な値に調整
+  // if (arm_goal_position > arm_current_position) {
+  //   analogWrite(ARM_PIN, pwm_value);
+  // } else if (arm_goal_position < arm_current_position) {
+  //   analogWrite(ARM_PIN, 255 - pwm_value);
+  // } else {
+  //   analogWrite(ARM_PIN, 0);
+  // }
 }
 
 void ARMIO::wire_tension_function(const bool& wire_option) {
