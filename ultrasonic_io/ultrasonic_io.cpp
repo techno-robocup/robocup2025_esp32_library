@@ -9,7 +9,8 @@ void UltrasonicIO::read(long* values) {
   digitalWrite(trig, HIGH);
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
-  long duration = pulseIn(echo, HIGH);
+  // Add timeout to prevent blocking (max 30ms = ~5 meters)
+  long duration = pulseIn(echo, HIGH, 30000);
   // Convert to centimeters: (duration * 0.034) / 2
   // Simplified: (duration * 17) / 1000
   duration = (duration * 17) / 1000;
