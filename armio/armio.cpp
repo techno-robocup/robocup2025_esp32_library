@@ -1,19 +1,17 @@
 #include "armio.hpp"
 
-ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
-             const std::int8_t& wire_sig)
-    : arm_pulse_pin(arm_pulse)
-    , arm_feedback_pin(arm_feedback)
-    , wire_sig_pin(wire_sig)
-    , prev_msec(micros())
-    , servo_interval(20000)
-    ,  // 20ms interval for servo PWM
-    kp(1.0)
-    , ki(0.1)
-    , kd(0.05)
-    , previous_error(0.0)
-    , integral(0.0)
-    , target_position(2048) {}  // Start at middle position
+ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback, const std::int8_t& wire_sig)
+    : arm_pulse_pin(arm_pulse),
+      arm_feedback_pin(arm_feedback),
+      wire_sig_pin(wire_sig),
+      prev_msec(micros()),
+      servo_interval(20000),  // 20ms interval for servo PWM
+      kp(1.0),
+      ki(0.1),
+      kd(0.05),
+      previous_error(0.0),
+      integral(0.0),
+      target_position(2048) {}  // Start at middle position
 
 ARMIO::ARMIO() {}
 
@@ -32,7 +30,7 @@ int ARMIO::positionToPWM(const int& position) {
 
 int ARMIO::getCurrentPosition() {
   // Read analog feedback from arm position sensor
-  return analogRead(arm_feedback_pin);  // NOTE:0~1023
+  return analogRead(arm_feedback_pin);
 }
 
 void ARMIO::arm_set_position(const int& position) {
@@ -60,15 +58,13 @@ void ARMIO::updatePID() {
   }
 
   int current_position = getCurrentPosition();
-  float error = target_position - (current_position * 4);  // PIN:test
+  float error = target_position - current_position;
 
   // Proportional term
   float proportional = kp * error;
 
   // Integral term
   integral += error;
-  if (integral > 10000) integral = 10000;
-  if (integral < -10000) integral = -10000;
   float integral_term = ki * integral;
 
   // Derivative term
