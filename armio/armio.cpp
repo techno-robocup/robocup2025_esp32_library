@@ -1,49 +1,94 @@
 #include "armio.hpp"
 
-ARMIO::ARMIO()
-    : ARM_PIN(-1)
-    , ARM_FEEDBACK_PIN(-1)
-    , WIRE_PIN(-1)
-    , arm_goal_position(0)
-    , arm_current_position(0) {}
+ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback, const std::int8_t& wire_sig)
+    : arm_pulse_pin(arm_pulse),
+      arm_feedback_pin(arm_feedback),
+      wire_sig_pin(wire_sig),
+      prev_msec(micros()),
+      servo_interval(20000),  // 20ms interval for servo PWM
+      kp(1.0),
+      ki(0.1),
+      kd(0.05),
+      previous_error(0.0),
+      integral(0.0),
+      target_position(2048) {}  // Start at middle position
+
+ARMIO::ARMIO() {}
 
 void ARMIO::init_pwm() {
-  ledcSetup(SERVO_CH, PWM_FREQ, PWM_RES);
-  ledcAttachPin(WIRE_PIN, SERVO_CH);
+  pinMode(arm_pulse_pin, OUTPUT);
+  pinMode(arm_feedback_pin, INPUT);
+  pinMode(wire_sig_pin, OUTPUT);
+  digitalWrite(wire_sig_pin, LOW);
 }
 
-ARMIO::ARMIO(const std::int8_t& _ARM_PIN, const std::int8_t& _ARM_FEEDBACK_PIN,
-             const std::int8_t& _WIRE_PIN)
-    : ARM_PIN(_ARM_PIN)
-    , ARM_FEEDBACK_PIN(_ARM_FEEDBACK_PIN)
-    , WIRE_PIN(_WIRE_PIN)
-    , arm_goal_position(0)
-    , arm_current_position(0) {
-  pinMode(ARM_PIN, OUTPUT);
-  pinMode(ARM_FEEDBACK_PIN, INPUT);
-  pinMode(WIRE_PIN, OUTPUT);
+int ARMIO::positionToPWM(const int& position) {
+  // Convert 0-4095 range to 500-2500µs linearly
+  // 500µs = 0°, 1500µs = 90°, 2500µs = 180°
+  return 1000 + (position * 1000) / 4095;
 }
 
-void ARMIO::read_arm_feedback() { arm_current_position = analogRead(ARM_FEEDBACK_PIN); }
-
-void ARMIO::arm_set_position(const int& goal) {
-  // arm_goal_position = goal;
-  // read_arm_feedback();
-
-  // int pwm_value = 128;  // FIXME: 適切な値に調整
-  // if (arm_goal_position > arm_current_position) {
-  //   analogWrite(ARM_PIN, pwm_value);
-  // } else if (arm_goal_position < arm_current_position) {
-  //   analogWrite(ARM_PIN, 255 - pwm_value);
-  // } else {
-  //   analogWrite(ARM_PIN, 0);
-  // }
+int ARMIO::getCurrentPosition() {
+  // Read analog feedback from arm position sensor
+  return analogRead(arm_feedback_pin);
 }
 
-void ARMIO::wire_tension_function(const bool& wire_option) {
-  if (wire_option) {
-    ledcWrite(SERVO_CH, WIRE_THIN);
-  } else {
-    ledcWrite(SERVO_CH, WIRE_LOOSE);
+void ARMIO::arm_set_position(const int& position) {
+  // Clamp position to valid range
+  int clamped_position = position;
+  if (clamped_position < 0) clamped_position = 0;
+  if (clamped_position > 4095) clamped_position = 4095;
+
+  target_position = clamped_position;
+}
+
+void ARMIO::wire_tension_function(const bool& enable) {
+  digitalWrite(wire_sig_pin, enable ? HIGH : LOW);
+}
+
+void ARMIO::updatePID() {
+  unsigned long current_micros = micros();
+  // Handle micros() overflow (wraps around every ~70 minutes)
+  unsigned long elapsed = (current_micros >= prev_msec)
+                              ? (current_micros - prev_msec)
+                              : (0xFFFFFFFF - prev_msec + current_micros + 1);
+
+  if (elapsed < (unsigned long)servo_interval) {
+    return;
   }
+
+  int current_position = getCurrentPosition();
+  float error = target_position - current_position;
+
+  // Proportional term
+  float proportional = kp * error;
+
+  // Integral term
+  integral += error;
+  float integral_term = ki * integral;
+
+  // Derivative term
+  float derivative = error - previous_error;
+  float derivative_term = kd * derivative;
+
+  // Calculate PID output
+  float pid_output = proportional + integral_term + derivative_term;
+
+  // Apply PID correction to target position
+  int corrected_position = target_position + (int)(pid_output / 10.0);  // Scale down PID output
+
+  // Clamp to valid range
+  if (corrected_position < 0) corrected_position = 0;
+  if (corrected_position > 4095) corrected_position = 4095;
+
+  // Generate servo PWM signal
+  int pulse_width = ARMIO::positionToPWM(corrected_position);
+
+  digitalWrite(arm_pulse_pin, HIGH);
+  delayMicroseconds(pulse_width);
+  digitalWrite(arm_pulse_pin, LOW);
+
+  // Update for next iteration
+  previous_error = error;
+  prev_msec = current_micros;
 }
