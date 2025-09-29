@@ -1,17 +1,19 @@
 #include "armio.hpp"
 
-ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback, const std::int8_t& wire_sig)
-    : arm_pulse_pin(arm_pulse),
-      arm_feedback_pin(arm_feedback),
-      wire_sig_pin(wire_sig),
-      prev_msec(micros()),
-      servo_interval(20000),  // 20ms interval for servo PWM
-      kp(1.0),
-      ki(0.1),
-      kd(0.05),
-      previous_error(0.0),
-      integral(0.0),
-      target_position(2048) {}  // Start at middle position
+ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
+             const std::int8_t& wire_sig)
+    : arm_pulse_pin(arm_pulse)
+    , arm_feedback_pin(arm_feedback)
+    , wire_sig_pin(wire_sig)
+    , prev_msec(micros())
+    , servo_interval(20000)
+    ,  // 20ms interval for servo PWM
+    kp(0.2)
+    , ki(0)
+    , kd(0.5)
+    , previous_error(0.0)
+    , integral(0.0)
+    , target_position(2048) {}  // Start at middle position
 
 ARMIO::ARMIO() {}
 
@@ -25,7 +27,7 @@ void ARMIO::init_pwm() {
 int ARMIO::positionToPWM(const int& position) {
   // Convert 0-4095 range to 500-2500µs linearly
   // 500µs = 0°, 1500µs = 90°, 2500µs = 180°
-  return 1000 + (position * 1000) / 4095;
+  return 1500 + (position * 1000) / 4095;
 }
 
 int ARMIO::getCurrentPosition() {
@@ -75,7 +77,7 @@ void ARMIO::updatePID() {
   float pid_output = proportional + integral_term + derivative_term;
 
   // Apply PID correction to target position
-  int corrected_position = target_position + (int)(pid_output / 10.0);  // Scale down PID output
+  int corrected_position = target_position - (int)(pid_output / 10.0);  // Scale down PID output
 
   // Clamp to valid range
   if (corrected_position < 0) corrected_position = 0;
