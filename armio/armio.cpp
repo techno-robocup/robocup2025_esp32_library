@@ -93,7 +93,7 @@ void ARMIO::updatePID() {
   if (corrected_position > 4095) corrected_position = 4095;
 
   // Generate servo PWM signal
-  int pulse_width = ARMIO::positionToPWM(corrected_position);
+  int pulse_width = ARMIO::positionToPWM(corrected_position - target_position);
 
   digitalWrite(arm_pulse_pin, HIGH);
   delayMicroseconds(pulse_width);
