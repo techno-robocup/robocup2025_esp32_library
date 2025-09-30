@@ -86,7 +86,7 @@ void ARMIO::updatePID() {
   float pid_output = proportional + integral_term + derivative_term;
 
   // Apply PID correction to target position
-  int corrected_position = target_position - (int)(pid_output / 10.0);  // Scale down PID output
+  int corrected_position = target_position + (int)(pid_output / 10.0);  // Scale down PID output
 
   // Clamp to valid range
   if (corrected_position < 0) corrected_position = 0;
