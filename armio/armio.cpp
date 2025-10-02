@@ -28,6 +28,7 @@ int ARMIO::positionToPWM(const int& position) {
   // Convert 0-4095 range to 500-2500µs linearly
   // 500µs = 0°, 1500µs = 90°, 2500µs = 180°
   return 1500 + (position * 1000) / 4095;
+  return 1500 + (position * 1000) / 4095;
 }
 
 int ARMIO::getCurrentPosition() {
@@ -45,6 +46,16 @@ void ARMIO::arm_set_position(const int& position) {
 }
 
 void ARMIO::wire_tension_function(const bool& enable) {
+  int target_angle = enable ? 90 : -90;
+
+  int pwm_value;
+  if (target_angle >= 0)
+    pwm_value = 1450 + (2400 - 1450) * target_angle / 90;
+  else
+    pwm_value = 1450 + (1450 - 500) * target_angle / -90;
+  digitalWrite(arm_pulse_pin, HIGH);
+  delayMicroseconds(pwm_value);
+  digitalWrite(arm_pulse_pin, LOW);
   int target_angle = enable ? 90 : -90;
 
   int pwm_value;
@@ -93,7 +104,7 @@ void ARMIO::updatePID() {
   if (corrected_position > 4095) corrected_position = 4095;
 
   // Generate servo PWM signal
-  int pulse_width = ARMIO::positionToPWM(corrected_position);
+  int pulse_width = ARMIO::positionToPWM(corrected_position - target_position);
 
   digitalWrite(arm_pulse_pin, HIGH);
   delayMicroseconds(pulse_width);
