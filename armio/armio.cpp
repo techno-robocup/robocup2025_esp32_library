@@ -7,8 +7,7 @@ ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
     , wire_sig_pin(wire_sig)
     , prev_msec(micros())
     , servo_interval(20000)
-    ,
-    kp(20)
+    , kp(20)
     , ki(0.1)
     , kd(0)
     , previous_error(0.0)
