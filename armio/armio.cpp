@@ -6,6 +6,7 @@ ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
     , arm_feedback_pin(arm_feedback)
     , wire_sig_pin(wire_sig)
     , prev_msec(micros())
+    , wire_prev_msec(micros())
     , servo_interval(20000)
     , kp(20)
     , ki(0.1)
@@ -44,6 +45,15 @@ void ARMIO::arm_set_position(const int& position) {
 }
 
 void ARMIO::wire_tension_function(const bool& enable) {
+  unsigned long current_micros = micros();
+  unsigned long elapsed = (current_micros >= wire_prev_msec)
+                              ? (current_micros - wire_prev_msec)
+                              : (0xFFFFFFFF - wire_prev_msec + current_micros + 1);
+
+  if (elapsed < (unsigned long)servo_interval) {
+    return;
+  }
+
   int target_angle = enable ? 90 : -90;
 
   int pwm_value;
@@ -51,9 +61,11 @@ void ARMIO::wire_tension_function(const bool& enable) {
     pwm_value = 1450 + (2400 - 1450) * target_angle / 90;
   else
     pwm_value = 1450 + (1450 - 500) * target_angle / -90;
-  digitalWrite(arm_pulse_pin, HIGH);
+  digitalWrite(wire_sig_pin, HIGH);
   delayMicroseconds(pwm_value);
-  digitalWrite(arm_pulse_pin, LOW);
+  digitalWrite(wire_sig_pin, LOW);
+
+  wire_prev_msec = current_micros;
 }
 
 void ARMIO::updatePID() {
