@@ -87,6 +87,9 @@ void ARMIO::updatePID() {
 
   // Integral term
   integral += error;
+  if (integral > 1000 || integral < -1000) {
+    integral = 0;
+  }
   float integral_term = ki * integral;
 
   // Derivative term
