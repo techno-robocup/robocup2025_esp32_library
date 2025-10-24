@@ -9,7 +9,7 @@ ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
     , wire_prev_msec(micros())
     , servo_interval(20000)
     ,  // 20ms interval for servo PWM
-    kp(0.2)
+    kp(0.15)
     , ki(0)
     , kd(0.5)
     , previous_error(0.0)
