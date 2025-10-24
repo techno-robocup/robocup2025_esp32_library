@@ -20,6 +20,7 @@ class ARMIO {
   std::int8_t wire_sig_pin;
 
   unsigned long prev_msec;
+  unsigned long wire_prev_msec;
   int servo_interval;
 
   // PID controller variables
