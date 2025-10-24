@@ -26,10 +26,8 @@ void ARMIO::init_pwm() {
 }
 
 int ARMIO::positionToPWM(const int& position) {
-  // Convert 0-4095 range to 500-2500µs linearly
-  // 500µs = 0°, 1500µs = 90°, 2500µs = 180°
-  return 1500 + (position * 1000) / 4095;
-  return 1500 + (position * 1000) / 4095;
+  // Convert 0-4095 range to 1000-2000µs linearly
+  return 1000 + (position * 1000) / 4095;
 }
 
 int ARMIO::getCurrentPosition() {
@@ -63,9 +61,10 @@ void ARMIO::wire_tension_function(const bool& enable) {
     pwm_value = 1450 + (2400 - 1450) * target_angle / 90;
   else
     pwm_value = 1450 + (1450 - 500) * target_angle / -90;
-  digitalWrite(arm_pulse_pin, HIGH);
+  digitalWrite(wire_sig_pin, HIGH);
   delayMicroseconds(pwm_value);
-  digitalWrite(arm_pulse_pin, LOW);
+  digitalWrite(wire_sig_pin, LOW);
+  wire_prev_msec = current_micros;
 }
 void ARMIO::updatePID() {
   unsigned long current_micros = micros();
@@ -80,6 +79,16 @@ void ARMIO::updatePID() {
 
   int current_position = getCurrentPosition();
   float error = target_position - current_position;
+
+  // Deadband: stop if close enough (±20 counts)
+  if (error > -20 && error < 20) {
+    int pulse_width = ARMIO::positionToPWM(target_position);
+    digitalWrite(arm_pulse_pin, HIGH);
+    delayMicroseconds(pulse_width);
+    digitalWrite(arm_pulse_pin, LOW);
+    prev_msec = current_micros;
+    return;
+  }
 
   // Proportional term
   float proportional = kp * error;
@@ -98,15 +107,15 @@ void ARMIO::updatePID() {
   // Calculate PID output
   float pid_output = proportional + integral_term + derivative_term;
 
-  // Apply PID correction to target position
-  int corrected_position = target_position - (int)(pid_output / 10.0);  // Scale down PID output
+  // Apply PID correction to current position
+  int corrected_position = current_position + (int)pid_output;
 
   // Clamp to valid range
   if (corrected_position < 0) corrected_position = 0;
   if (corrected_position > 4095) corrected_position = 4095;
 
   // Generate servo PWM signal
-  int pulse_width = ARMIO::positionToPWM(corrected_position - target_position);
+  int pulse_width = ARMIO::positionToPWM(corrected_position);
 
   digitalWrite(arm_pulse_pin, HIGH);
   delayMicroseconds(pulse_width);
