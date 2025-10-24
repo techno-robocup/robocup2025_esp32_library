@@ -9,9 +9,9 @@ ARMIO::ARMIO(const std::int8_t& arm_pulse, const std::int8_t& arm_feedback,
     , wire_prev_msec(micros())
     , servo_interval(20000)
     ,  // 20ms interval for servo PWM
-    kp(0.15)
+    kp(0.1)
     , ki(0)
-    , kd(0.5)
+    , kd(0.0)
     , previous_error(0.0)
     , integral(0.0)
     , target_position(2048) {}  // Start at middle position
