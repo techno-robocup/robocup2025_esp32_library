@@ -66,18 +66,7 @@ void ARMIO::wire_tension_function(const bool& enable) {
   digitalWrite(arm_pulse_pin, HIGH);
   delayMicroseconds(pwm_value);
   digitalWrite(arm_pulse_pin, LOW);
-  int target_angle = enable ? 90 : -90;
-
-  int pwm_value;
-  if (target_angle >= 0)
-    pwm_value = 1450 + (2400 - 1450) * target_angle / 90;
-  else
-    pwm_value = 1450 + (1450 - 500) * target_angle / -90;
-  digitalWrite(arm_pulse_pin, HIGH);
-  delayMicroseconds(pwm_value);
-  digitalWrite(arm_pulse_pin, LOW);
 }
-
 void ARMIO::updatePID() {
   unsigned long current_micros = micros();
   // Handle micros() overflow (wraps around every ~70 minutes)
