@@ -82,9 +82,8 @@ void ARMIO::updatePID() {
 
   // Deadband: stop if close enough (±20 counts)
   if (error > -20 && error < 20) {
-    int pulse_width = ARMIO::positionToPWM(target_position);
     digitalWrite(arm_pulse_pin, HIGH);
-    delayMicroseconds(pulse_width);
+    delayMicroseconds(1500);  // Stop motor
     digitalWrite(arm_pulse_pin, LOW);
     prev_msec = current_micros;
     return;
@@ -104,18 +103,15 @@ void ARMIO::updatePID() {
   float derivative = error - previous_error;
   float derivative_term = kd * derivative;
 
-  // Calculate PID output
+  // Calculate PID output (motor speed correction)
   float pid_output = proportional + integral_term + derivative_term;
 
-  // Apply PID correction to current position
-  int corrected_position = current_position + (int)pid_output;
+  // Convert PID to PWM: 1500µs (stop) ± pid_output
+  int pulse_width = 1500 + (int)pid_output;
 
-  // Clamp to valid range
-  if (corrected_position < 0) corrected_position = 0;
-  if (corrected_position > 4095) corrected_position = 4095;
-
-  // Generate servo PWM signal
-  int pulse_width = ARMIO::positionToPWM(corrected_position);
+  // Clamp to valid servo range (1000-2000µs)
+  if (pulse_width < 1000) pulse_width = 1000;
+  if (pulse_width > 2000) pulse_width = 2000;
 
   digitalWrite(arm_pulse_pin, HIGH);
   delayMicroseconds(pulse_width);
