@@ -54,13 +54,11 @@ void ARMIO::wire_tension_function(const bool& enable) {
     return;
   }
 
-  int target_angle = enable ? 90 : -90;
-
   int pwm_value;
-  if (target_angle >= 0)
-    pwm_value = 1450 + (2400 - 1450) * target_angle / 90;
+  if (enable)
+    pwm_value = 2400;
   else
-    pwm_value = 1450 + (1450 - 500) * target_angle / -90;
+    pwm_value = 500;
   digitalWrite(wire_sig_pin, HIGH);
   delayMicroseconds(pwm_value);
   digitalWrite(wire_sig_pin, LOW);
