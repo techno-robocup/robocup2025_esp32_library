@@ -31,9 +31,6 @@ class ARMIO {
   float integral;
   int target_position;
 
-  // Convert 0-4095 range to servo PWM microseconds (500-2500µs)
-  int positionToPWM(const int& position);
-
   // Read current arm position from feedback pin
   int getCurrentPosition();
 };

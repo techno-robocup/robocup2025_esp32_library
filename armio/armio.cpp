@@ -25,11 +25,6 @@ void ARMIO::init_pwm() {
   digitalWrite(wire_sig_pin, LOW);
 }
 
-int ARMIO::positionToPWM(const int& position) {
-  // Convert 0-4095 range to 1000-2000µs linearly
-  return 1000 + (position * 1000) / 4095;
-}
-
 int ARMIO::getCurrentPosition() {
   // Read analog feedback from arm position sensor
   return analogRead(arm_feedback_pin);
